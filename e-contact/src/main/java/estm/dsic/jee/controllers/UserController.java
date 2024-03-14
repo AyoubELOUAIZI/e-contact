@@ -31,7 +31,7 @@ public class UserController {
     @POST
     @Path("/signup")
     public Response signUpUser(User user) {
-        System.out.println("\n\n\nthe signup methed is called "+user);
+        System.out.println("\n\n\nthe signup methed is called " + user);
         try {
             User createdUser = userService.createUser(user);
             return Response.ok(createdUser).build();
@@ -46,10 +46,18 @@ public class UserController {
     public Response signInUser(User user) {
         try {
             User signedInUser = userService.signInUser(user.getEmail(), user.getPassword());
+            System.out.println("User to sign in"+ signedInUser);
             if (signedInUser != null) {
-                return Response.ok(signedInUser).build(); // Return user details or token/session identifier
+                if (signedInUser.isSubscribed()) {
+                    return Response.ok(signedInUser).build(); // User is subscribed, allow sign-in
+                } else {
+                    return Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Your account is not verified yet. Please try again later or contact the admin.")
+                            .build();
+                }
             } else {
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Invalid credentials").build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
