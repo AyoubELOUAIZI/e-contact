@@ -34,4 +34,9 @@ public class ContactServiceImpl implements ContactService,Serializable {
         return contactDao.deleteContact(id);
     }
 
+    @Override
+    public List<Contact> searchContactsByKeyword(String keyword) {
+        return contactDao.searchContactsByKeyword(keyword);
+    }
+
 }

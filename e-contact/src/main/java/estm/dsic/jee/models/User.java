@@ -108,6 +108,14 @@ public class User {
         }
     }
 
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean isSubscribed) {
+        this.isSubscribed = isSubscribed;
+    }
+
 
 
 }

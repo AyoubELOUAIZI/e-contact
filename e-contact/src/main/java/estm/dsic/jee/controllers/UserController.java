@@ -127,4 +127,33 @@ public class UserController {
                     .entity("Error deleting user: " + e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/search")
+    public Response searchUsers(@QueryParam("keyword") String keyword) {
+        try {
+            List<User> users = userService.searchUsersByKeyword(keyword);
+            return Response.ok(users).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error searching users: " + e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/{userId}/subscribe")
+    public Response subscribeUser(@PathParam("userId") Long userId, @QueryParam("adminId") Long adminId) {
+        try {
+            boolean isAdmin = userService.subscribeUser(adminId, userId);
+            if (isAdmin) {
+                return Response.ok().entity("User subscribed successfully").build();
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Only admin can subscribe users").build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error subscribing user: " + e.getMessage()).build();
+        }
+    }
 }

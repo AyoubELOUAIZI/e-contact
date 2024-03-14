@@ -68,4 +68,16 @@ public class ContactController {
                     .entity("Error deleting contact: " + e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/search")
+    public Response searchContacts(@QueryParam("keyword") String keyword) {
+        try {
+            List<Contact> contacts = contactService.searchContactsByKeyword(keyword);
+            return Response.ok(contacts).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error searching contacts: " + e.getMessage()).build();
+        }
+    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Transactional
 @SessionScoped
-public class UserDaoImpl implements UserDao , Serializable {
+public class UserDaoImpl implements UserDao, Serializable {
 
     @PersistenceContext(unitName = "e_contact")
     private EntityManager entityManager;
@@ -44,6 +44,7 @@ public class UserDaoImpl implements UserDao , Serializable {
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setAdmin(user.isAdmin());
+            existingUser.setSubscribed(user.isSubscribed());
             existingUser.setMaxContacts(user.getMaxContacts());
             // Set any other properties you want to update
             entityManager.merge(existingUser);
@@ -70,5 +71,13 @@ public class UserDaoImpl implements UserDao , Serializable {
         query.setParameter("password", password);
         List<User> users = query.getResultList();
         return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
+    public List<User> searchUsersByKeyword(String keyword) {
+        String query = "SELECT u FROM User u WHERE u.name LIKE :keyword OR u.email LIKE :keyword";
+        return entityManager.createQuery(query, User.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
     }
 }

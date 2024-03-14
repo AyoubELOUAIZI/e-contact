@@ -8,7 +8,6 @@ import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-
 @SessionScoped
 public class UserServiceImpl implements UserService, Serializable {
     @Inject
@@ -42,6 +41,25 @@ public class UserServiceImpl implements UserService, Serializable {
     @Override
     public User signInUser(String email, String password) {
         return userDao.getUserByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public List<User> searchUsersByKeyword(String keyword) {
+        return userDao.searchUsersByKeyword(keyword);
+    }
+
+    @Override
+    public boolean subscribeUser(Long adminId, Long userId) {
+        User adminUser = userDao.getUserById(adminId);
+        if (adminUser != null && adminUser.isAdmin()) {
+            User userToSubscribe = userDao.getUserById(userId);
+            if (userToSubscribe != null) {
+                userToSubscribe.setSubscribed(true);
+                userDao.updateUser(userId, userToSubscribe);
+                return true; // Successfully subscribed
+            }
+        }
+        return false; // Admin not found or user not found
     }
 
 }

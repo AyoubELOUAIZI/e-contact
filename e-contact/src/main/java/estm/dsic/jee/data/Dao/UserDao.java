@@ -11,5 +11,6 @@ public interface UserDao {
     User updateUser(Long id, User user);
     boolean deleteUser(Long id);
     User getUserByEmailAndPassword(String email, String password);
+    List<User> searchUsersByKeyword(String keyword);
 
 }

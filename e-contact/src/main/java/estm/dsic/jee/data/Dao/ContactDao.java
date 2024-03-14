@@ -9,4 +9,6 @@ public interface ContactDao {
     Contact createContact(Contact contact);
     Contact updateContact(Long id, Contact contact);
     boolean deleteContact(Long id);
+    List<Contact> searchContactsByKeyword(String keyword);
+
 }

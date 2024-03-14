@@ -11,5 +11,7 @@ public interface UserService {
     User updateUser(Long id, User user);
     boolean deleteUser(Long id);
     User signInUser(String email, String password);
+    List<User> searchUsersByKeyword(String keyword);
+    boolean subscribeUser(Long adminId, Long userId);
 
 }

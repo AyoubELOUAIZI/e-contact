@@ -59,4 +59,12 @@ public class ContactDaoImpl implements ContactDao, Serializable {
         return false; // Contact with the given id not found
     }
 
+    @Override
+    public List<Contact> searchContactsByKeyword(String keyword) {
+        String query = "SELECT c FROM Contact c WHERE c.nom LIKE :keyword OR c.tele LIKE :keyword OR c.email LIKE :keyword OR c.adresse LIKE :keyword";
+        return entityManager.createQuery(query, Contact.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
+    }
+
 }
