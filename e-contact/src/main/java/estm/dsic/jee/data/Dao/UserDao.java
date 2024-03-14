@@ -10,4 +10,6 @@ public interface UserDao {
     User getUserById(Long id);
     User updateUser(Long id, User user);
     boolean deleteUser(Long id);
+    User getUserByEmailAndPassword(String email, String password);
+
 }

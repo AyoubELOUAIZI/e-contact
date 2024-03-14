@@ -2,16 +2,20 @@ package estm.dsic.jee.data.Dao;
 
 import estm.dsic.jee.models.Contact;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
+import java.io.Serializable;
 import java.util.List;
 
-@ApplicationScoped
-public class ContactDaoImpl implements ContactDao {
 
-    @PersistenceContext
+@Transactional
+@SessionScoped
+public class ContactDaoImpl implements ContactDao, Serializable {
+
+    @PersistenceContext(unitName = "e_contact")
     private EntityManager entityManager;
 
     @Override

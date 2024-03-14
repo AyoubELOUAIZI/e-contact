@@ -2,16 +2,20 @@ package estm.dsic.jee.data.Dao;
 
 import estm.dsic.jee.models.User;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+
+import java.io.Serializable;
 import java.util.List;
 
-@ApplicationScoped
-public class UserDaoImpl implements UserDao {
+@Transactional
+@SessionScoped
+public class UserDaoImpl implements UserDao , Serializable {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "e_contact")
     private EntityManager entityManager;
 
     @Override
@@ -56,5 +60,15 @@ public class UserDaoImpl implements UserDao {
             return true; // Deletion successful
         }
         return false; // User with the given id not found
+    }
+
+    @Override
+    public User getUserByEmailAndPassword(String email, String password) {
+        TypedQuery<User> query = entityManager
+                .createQuery("SELECT u FROM User u WHERE u.email = :email AND u.password = :password", User.class);
+        query.setParameter("email", email);
+        query.setParameter("password", password);
+        List<User> users = query.getResultList();
+        return users.isEmpty() ? null : users.get(0);
     }
 }

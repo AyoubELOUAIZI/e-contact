@@ -2,11 +2,15 @@ package estm.dsic.jee.services;
 
 import estm.dsic.jee.models.User;
 import estm.dsic.jee.data.Dao.UserDao;
-
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class UserServiceImpl implements UserService {
+
+@SessionScoped
+public class UserServiceImpl implements UserService, Serializable {
     @Inject
     private UserDao userDao;
 
@@ -32,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(Long id) {
-       return userDao.deleteUser(id);
+        return userDao.deleteUser(id);
     }
+
+    @Override
+    public User signInUser(String email, String password) {
+        return userDao.getUserByEmailAndPassword(email, password);
+    }
+
 }

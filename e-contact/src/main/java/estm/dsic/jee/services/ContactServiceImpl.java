@@ -2,11 +2,15 @@ package estm.dsic.jee.services;
 
 import estm.dsic.jee.models.Contact;
 import estm.dsic.jee.data.Dao.ContactDao;
-
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class ContactServiceImpl implements ContactService {
+
+@SessionScoped
+public class ContactServiceImpl implements ContactService,Serializable {
     @Inject
     private ContactDao contactDao;
 

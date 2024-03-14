@@ -10,4 +10,6 @@ public interface UserService {
     User getUserById(Long id);
     User updateUser(Long id, User user);
     boolean deleteUser(Long id);
+    User signInUser(String email, String password);
+
 }

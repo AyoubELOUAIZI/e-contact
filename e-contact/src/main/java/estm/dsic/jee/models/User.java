@@ -81,6 +81,14 @@ public class User {
         this.contacts = contacts;
     }
 
+    
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", isAdmin=" + isAdmin
+                + ", isSubscribed=" + isSubscribed + ", maxContacts=" + maxContacts + ", contacts=" + contacts + "]";
+    }
+
     // PrePersist method to set default values or perform operations before
     // persisting the entity
     @PrePersist
@@ -99,5 +107,7 @@ public class User {
             this.isSubscribed = false; // Ensure isSubscribed is set to false if not provided
         }
     }
+
+
 
 }

@@ -29,6 +29,49 @@ public class UserController {
     }
 
     @POST
+    @Path("/signup")
+    public Response signUpUser(User user) {
+        System.out.println("\n\n\nthe signup methed is called "+user);
+        try {
+            User createdUser = userService.createUser(user);
+            return Response.ok(createdUser).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error creating user in signup: " + e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/signin")
+    public Response signInUser(User user) {
+        try {
+            User signedInUser = userService.signInUser(user.getEmail(), user.getPassword());
+            if (signedInUser != null) {
+                return Response.ok(signedInUser).build(); // Return user details or token/session identifier
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error signing in: " + e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/signout")
+    public Response signOutUser() {
+        try {
+            // Implement sign-out logic
+            // Example: Invalidate user session/token
+            // Return success message
+            return Response.ok().entity("User signed out successfully").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error signing out: " + e.getMessage()).build();
+        }
+    }
+
+    @POST
     public Response createUser(User user) {
         try {
             User createdUser = userService.createUser(user);
